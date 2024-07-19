@@ -1,0 +1,7 @@
+furo
+sphinx
+sphinx-click
+myst_parser
+sphinx-copybutton
+sphinx-autoapi
+sphinxcontrib-mermaid
