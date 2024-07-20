@@ -65,7 +65,10 @@ def update_latest_works(config: str) -> None:
     click.echo("Updating latest works.")
 
     entries_md = "\n".join(
-        ["* {title} (_{journal}_)".format(**entry) for entry in latest_works]
+        [
+            f"- [{paper.title}]({paper.url}) (_{paper.journal} - {paper.year}_)"
+            for paper in latest_works
+        ]
     )
 
     readme_path = Path("README.md")
