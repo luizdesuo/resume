@@ -64,12 +64,16 @@ def update_latest_works(config: str) -> None:
 
     click.echo("Updating latest works.")
 
-    entries_md = "\n".join(
+    entries_title = "## Latest Published"
+
+    entries = "\n".join(
         [
             f"- [{paper.title}]({paper.url}) (_{paper.journal} - {paper.year}_)"
             for paper in latest_works
         ]
     )
+
+    entries_md = "\n".join([entries_title, entries])
 
     readme_path = Path("README.md")
     readme = readme_path.open().read()

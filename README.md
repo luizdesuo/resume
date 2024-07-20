@@ -31,8 +31,6 @@
 
 - [cookiecutter-dinkin-flicka](https://github.com/luizdesuo/cookiecutter-dinkin-flicka)
 
-## Latest Published
-
 <!-- latest_published starts -->
 
 <!-- latest_published ends -->
