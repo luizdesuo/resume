@@ -9,7 +9,8 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from random import SystemRandom
+from random import SystemRandom, uniform
+from time import sleep
 
 import requests
 import yaml  # type: ignore
@@ -106,6 +107,10 @@ def load_scholar_published_works(config: str) -> list[Paper]:
     author_id: str = params["scholar"]["author_id"]
     number: int = params["scholar"]["number"]
     timeout: int = params["scholar"]["timeout"]
+    inner_search: bool = params["scholar"]["inner_search"]
+    info_pattern: str = params["scholar"]["info_pattern"]
+    sleep_time: list[int] = params["scholar"]["sleep_time"]
+    sleep_min, sleep_max = sleep_time
 
     base_url = "https://scholar.google.com"
 
@@ -122,34 +127,40 @@ def load_scholar_published_works(config: str) -> list[Paper]:
 
     soup = BeautifulSoup(response.text, "html.parser")
 
-    urls = []
-    for paper in soup.find_all("td", {"class": "gsc_a_t"}):
-        a_tag = paper.find("a", class_="gsc_a_at")
-        if a_tag:
-            urls.append(f"{base_url}{a_tag.get('href')}")
+    out_papers: list[Paper] = []
+    for paper in soup.select("#gsc_a_b .gsc_a_t")[:number]:
+        title = paper.select_one(".gsc_a_at").text
+        url = f"{base_url}{paper.select_one('.gsc_a_at')['href']}"
+        info = f"{paper.select_one('.gs_gray+ .gs_gray').text}".replace("\xa0", "")
+        match_pattern = re.search(info_pattern, info)
 
-    urls = urls[:number]
+        if match_pattern:
+            groups = match_pattern.groupdict()
+            year = groups["year"]
+            journal = groups["journal"]
+        else:
+            continue
 
-    papers: list[Paper] = []
-    for url in urls:
-        cryptogen = SystemRandom()
-        headers = {"User-Agent": cryptogen.choice(USER_AGENTS)}
-        response = requests.get(url, headers=headers, timeout=timeout)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, "html.parser")
-        a_tag = soup.find("a", {"class": "gsc_oci_title_link"})
-        title = a_tag.text
-        link = a_tag["href"]
-        for paper_field in soup.find_all("div", {"class": "gs_scl"}):
-            field_name = paper_field.find("div", {"class": "gsc_oci_field"}).text
-            field_value = paper_field.find("div", {"class": "gsc_oci_value"}).text
-            if field_name == "Publication date":
-                date = field_value
-            elif field_name == "Journal":
-                journal = field_value
-            else:
-                continue
-        papers.append(Paper.from_date(title, link, journal, date))
+        out_papers.append(Paper(title, url, journal, year))
+
+    if inner_search:
+        papers: list[Paper] = []
+        for paper in out_papers:
+            cryptogen = SystemRandom()
+            headers = {"User-Agent": cryptogen.choice(USER_AGENTS)}
+            sleep(uniform(sleep_min, sleep_max))  # nosec
+            response = requests.get(paper.url, headers=headers, timeout=timeout)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, "html.parser")
+            header = soup.select_one(".gsc_oci_title_link")
+            title = header.text
+            link = header["href"]
+            date, journal = map(
+                lambda element: element.text, soup.select(".gsc_oci_value")[1:3]
+            )
+            papers.append(Paper.from_date(title, link, journal, date))
+    else:
+        papers = out_papers
 
     return papers
 
