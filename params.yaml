@@ -1,5 +1,10 @@
 scholar:
-  author_id: "YLWr2gsAAAAJ"
-  number: 5
-  marker: latest_published
-  timeout: 120
+  author_id: "YLWr2gsAAAAJ" # Author's google scholar id
+  number: 5 # Number of works
+  marker: latest_published # Content fill between the markers in README.md
+  timeout: 120 # Parameter for requests
+  inner_search: true # If true the inner urls are investigated
+  info_pattern: \s?(?P<journal>[^\d,]+).*(?P<year>\d{4}) # Metadata pattern
+  sleep_time:
+    - 2 # Minimum sleep time
+    - 6 # Maximum sleep time
