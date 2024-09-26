@@ -3,7 +3,7 @@ scholar:
   number: 5 # Number of works
   marker: latest_published # Content fill between the markers in README.md
   timeout: 120 # Parameter for requests
-  inner_search: true # If true the inner urls are investigated
+  inner_search: false # If true the inner urls are investigated
   info_pattern: \s?(?P<journal>[^\d,]+).*(?P<year>\d{4}) # Metadata pattern
   sleep_time:
     - 2 # Minimum sleep time
