@@ -32,12 +32,6 @@
 - [cookiecutter-dinkin-flicka](https://github.com/luizdesuo/cookiecutter-dinkin-flicka)
 
 <!-- latest_published starts -->
-## Latest Published
-- [A Bayesian Hierarchical Model to create synthetic Power Distribution Systems](https://www.sciencedirect.com/science/article/pii/S0378779624005923) (_Electric Power Systems Research - 2024_)
-- [Intelligent Resource Allocation in Power Grids: Leveraging Variable Neighborhood Search for Optimal Switch Allocation](https://ieeexplore.ieee.org/abstract/document/10570012/) (_Electric Power Systems Research - 2024_)
-- [Resilience assessment of critical infrastructures using dynamic Bayesian networks and evidence propagation](https://www.sciencedirect.com/science/article/pii/S0951832023006051) (_Reliability Engineering & System Safety - 2024_)
-- [A stochastic Bayesian artificial intelligence framework to assess climatological water balance under missing variables for evapotranspiration estimates](https://www.mdpi.com/2073-4395/13/12/2970) (_Agronomy - 2023_)
-- [A Multilayer System and Optimization Framework for Team Dispatch Towards Service Recovery](https://ieeexplore.ieee.org/abstract/document/10255361/) (_IEEE Transactions on Reliability - 2023_)
 <!-- latest_published ends -->
 
 ## Other Links
