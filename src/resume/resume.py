@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from random import SystemRandom, uniform
+from random import SystemRandom
 from time import sleep
 
 import requests
@@ -148,7 +148,7 @@ def load_scholar_published_works(config: str) -> list[Paper]:
         for paper in out_papers:
             cryptogen = SystemRandom()
             headers = {"User-Agent": cryptogen.choice(USER_AGENTS)}
-            sleep(uniform(sleep_min, sleep_max))  # nosec
+            sleep(cryptogen.uniform(sleep_min, sleep_max))
             response = requests.get(paper.url, headers=headers, timeout=timeout)
             response.raise_for_status()
             soup = BeautifulSoup(response.text, "html.parser")
