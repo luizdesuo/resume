@@ -64,7 +64,7 @@ def update_latest_works(config: str) -> None:
 
     click.echo("Updating latest works.")
 
-    entries_title = "## Latest Published"
+    entries_title = "## Latest Published\n"
 
     entries = "\n".join(
         [
