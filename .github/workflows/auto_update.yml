@@ -28,6 +28,8 @@ jobs:
         run: |-
           poetry run resume update-latest-works
           cat README.md
+          poetry run resume update-repos
+          cat README.md
       - name: Commit and push if changed
         run: |-
           git diff

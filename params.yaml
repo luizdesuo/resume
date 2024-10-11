@@ -8,3 +8,9 @@ scholar:
   sleep_time:
     - 2 # Minimum sleep time
     - 6 # Maximum sleep time
+
+github:
+  github_id: "luizdesuo" # Github profile
+  number: 5 # Number of repositories
+  marker: repositories # Content fill between the markers in README.md
+  timeout: 120 # Parameter for requests

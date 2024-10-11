@@ -73,6 +73,22 @@ class Paper:
         return cls(title, url, journal, year)
 
 
+@dataclass
+class Repository:
+    """Container for a paper.
+
+    Parameters
+    ----------
+    name : str
+        Name of the repository.
+    url : str
+        Publisher url of the paper.
+    """
+
+    name: str = field()
+    url: str = field()
+
+
 ###############################################################################
 # Load functions ##############################################################
 ###############################################################################
@@ -163,6 +179,44 @@ def load_scholar_published_works(config: str) -> list[Paper]:
         papers = out_papers
 
     return papers
+
+
+def load_github_repos(config: str) -> list[Repository]:
+    """Load Github public repositories.
+
+    Parameters
+    ----------
+    config : str
+        Configuration path for the personal data parameters.
+
+    Returns
+    -------
+    list[Repository]
+        List with repositories containing the name and the url.
+    """
+    with open(config) as config_file:
+        params = yaml.safe_load(config_file)
+
+    github_id: str = params["github"]["github_id"]
+
+    number: int = params["github"]["number"]
+    timeout: int = params["github"]["timeout"]
+
+    url = f"https://api.github.com/users/{github_id}/repos"
+
+    cryptogen = SystemRandom()
+    headers = {"User-Agent": cryptogen.choice(USER_AGENTS)}
+
+    response = requests.get(url, headers=headers, timeout=timeout)
+
+    response.raise_for_status()
+
+    repositories: list[Repository] = [
+        Repository(name=repo["name"], url=repo["html_url"])
+        for repo in response.json()[:number]
+    ]
+
+    return repositories
 
 
 def replace_chunk(content: str, marker: str, chunk: str, inline: bool = False) -> str:
