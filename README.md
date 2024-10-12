@@ -32,6 +32,7 @@
 
 - [banquo](https://github.com/luizdesuo/banquo)
 - [cookiecutter-dinkin-flicka](https://github.com/luizdesuo/cookiecutter-dinkin-flicka)
+- [resume](https://github.com/luizdesuo/resume)
 <!-- repositories ends -->
 
 <!-- latest_published starts -->
